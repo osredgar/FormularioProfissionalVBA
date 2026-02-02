@@ -30,6 +30,8 @@ Public WithEvents mTelefone As MSForms.TextBox
 Attribute mTelefone.VB_VarHelpID = -1
 Public WithEvents mEmail As MSForms.TextBox
 Attribute mEmail.VB_VarHelpID = -1
+Public WithEvents mNumeroTexto As MSForms.TextBox
+Attribute mNumeroTexto.VB_VarHelpID = -1
 
 Public WithEvents Decimal2 As MSForms.TextBox
 Attribute Decimal2.VB_VarHelpID = -1
@@ -43,8 +45,7 @@ Public WithEvents Inteiro As MSForms.TextBox
 Attribute Inteiro.VB_VarHelpID = -1
 Public WithEvents Letra As MSForms.TextBox
 Attribute Letra.VB_VarHelpID = -1
-Public WithEvents Numero As MSForms.TextBox
-Attribute Numero.VB_VarHelpID = -1
+
 
 Private Function ObterApenasNumeros(ByVal pTexto As String) As String
     Dim re As Object
@@ -583,8 +584,8 @@ Private Sub Letra_KeyPress(ByVal KeyAscii As ReturnInteger)
     End Select
 End Sub
 
-Private Sub Numero_KeyPress(ByVal KeyAscii As ReturnInteger)
-    Select Case (KeyAscii)
+Private Sub mNumeroTexto_KeyPress(ByVal KeyAscii As ReturnInteger)
+    Select Case KeyAscii
         Case 48 To 57
             KeyAscii = KeyAscii
         Case Else

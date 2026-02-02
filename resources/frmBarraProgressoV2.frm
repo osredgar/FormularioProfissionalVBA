@@ -1,16 +1,15 @@
 VERSION 5.00
-Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmBarraProgresso 
-   ClientHeight    =   615
+Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} frmBarraProgressoV2 
+   ClientHeight    =   735
    ClientLeft      =   120
    ClientTop       =   465
    ClientWidth     =   11760
-   OleObjectBlob   =   "frmBarraProgresso.frx":0000
-   ShowModal       =   0   'False
+   OleObjectBlob   =   "frmBarraProgressoV2.frx":0000
    StartUpPosition =   2  'CenterScreen
 End
-Attribute VB_Name = "frmBarraProgresso"
+Attribute VB_Name = "frmBarraProgressoV2"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-Option Explicit
+
