@@ -9,8 +9,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-'KEYDOWN: ocorra quando o usu·rio pressiona uma tecla
-'KEYPRESS: ocorre quando o usu·rio pressiona e libera uma tecla
+Private mAtualizando As Boolean
 
 Public WithEvents mAno As MSForms.TextBox
 Attribute mAno.VB_VarHelpID = -1
@@ -32,196 +31,226 @@ Public WithEvents mEmail As MSForms.TextBox
 Attribute mEmail.VB_VarHelpID = -1
 Public WithEvents mNumeroTexto As MSForms.TextBox
 Attribute mNumeroTexto.VB_VarHelpID = -1
-
-Public WithEvents Decimal2 As MSForms.TextBox
-Attribute Decimal2.VB_VarHelpID = -1
-Public WithEvents Decimal4 As MSForms.TextBox
-Attribute Decimal4.VB_VarHelpID = -1
-Public WithEvents Decimal6 As MSForms.TextBox
-Attribute Decimal6.VB_VarHelpID = -1
-Public WithEvents Hora As MSForms.TextBox
-Attribute Hora.VB_VarHelpID = -1
-Public WithEvents Inteiro As MSForms.TextBox
-Attribute Inteiro.VB_VarHelpID = -1
-Public WithEvents Letra As MSForms.TextBox
-Attribute Letra.VB_VarHelpID = -1
+Public WithEvents mDecimal As MSForms.TextBox
+Attribute mDecimal.VB_VarHelpID = -1
+Public WithEvents mHora As MSForms.TextBox
+Attribute mHora.VB_VarHelpID = -1
+Public WithEvents mInteiro As MSForms.TextBox
+Attribute mInteiro.VB_VarHelpID = -1
+Public WithEvents mLetra As MSForms.TextBox
+Attribute mLetra.VB_VarHelpID = -1
 
 
-Private Function ObterApenasNumeros(ByVal pTexto As String) As String
+Private Function ObterApenasNumeros(ByVal texto As String) As String
     Dim re As Object
     Set re = CreateObject("VBScript.RegExp")
     
     With re
         .Global = True
         .Pattern = "\D"
+        texto = .Replace(texto, "")
     End With
     
-    ObterApenasNumeros = re.Replace(Trim(pTexto), "")
+    ObterApenasNumeros = Trim(texto)
 
     Set re = Nothing
 End Function
 
-Public Function ValidarEmail() As Boolean
-    ValidarEmail = True
-    
-    If mEmail.Value = "" Then Exit Function
-    
+Private Function ObterApenasLetras(ByVal texto As String) As String
     Dim re As Object
     Set re = CreateObject("VBScript.RegExp")
+    
+    texto = Trim(texto)
     
     With re
         .Global = True
-        .MultiLine = True
-        .Pattern = "\S+@\S+\.\S+"
+        .Pattern = "[^A-Za-z¡¿¬√ƒ…» ÀÕÃŒœ”“‘’÷⁄Ÿ€‹«·‡‚„‰ÈËÍÎÌÏÓÔÛÚÙıˆ˙˘˚¸Á ]+"
+        texto = .Replace(texto, "")
+        .Pattern = " {2,}"
+        texto = .Replace(texto, " ")
     End With
     
-    Dim texto As String
-    texto = mEmail.Value
-    
-    ValidarEmail = re.test(texto)
-
-    If Not ValidarEmail Then
-        MsgBox "E-mail em formato inv·lido", vbExclamation
-    End If
+    ObterApenasLetras = texto
 
     Set re = Nothing
 End Function
 
-
-Public Function ValidarTelefone() As Boolean
-    ValidarTelefone = True
-    
-    If mTelefone.Value = "" Then Exit Function
-    
+Private Function RemoverAcentos(ByVal texto As String, Optional tipoTexto As VbStrConv = vbProperCase) As String
     Dim re As Object
     Set re = CreateObject("VBScript.RegExp")
-    
-    With re
-        .Global = True
-        .MultiLine = True
-        .Pattern = "^\(?\d{2}\)?\s?(9?\d{4})-?\d{4}$"
-    End With
-    
-    Dim texto As String
-    texto = mTelefone.Value
-    
-    ValidarTelefone = re.test(texto)
-    
-    texto = ObterApenasNumeros(texto)
-        
-    If Not ValidarTelefone Then
-        MsgBox "Formato de telefone inv·lido", vbExclamation
-    End If
-    
-    Set re = Nothing
-End Function
 
-Private Function RemoverAcentos(ByVal texto As String, Optional tipoTexto As VbStrConv = vbUpperCase) As String
-    Dim re As Object
-    Set re = CreateObject("VBScript.RegExp")
-        
     With re
         .Global = True
         .IgnoreCase = True
-        .Pattern = "[·‡„‚‰]"
+        .Pattern = "[·‡„‚‰Â]"
         texto = .Replace(texto, "a")
+        .Pattern = "[¡¿√¬ƒ≈]"
+        texto = .Replace(texto, "A")
         .Pattern = "[ÈËÍÎ]"
         texto = .Replace(texto, "e")
+        .Pattern = "[…» À]"
+        texto = .Replace(texto, "E")
         .Pattern = "[ÌÏÓÔ]"
         texto = .Replace(texto, "i")
-        .Pattern = "[ÛÚıÙˆ]"
+        .Pattern = "[ÕÃŒœ]"
+        texto = .Replace(texto, "I")
+        .Pattern = "[ÛÚıÙˆ¯]"
         texto = .Replace(texto, "o")
+        .Pattern = "[”“’‘÷ÿ]"
+        texto = .Replace(texto, "O")
         .Pattern = "[˙˘˚¸]"
         texto = .Replace(texto, "u")
+        .Pattern = "[⁄Ÿ€‹]"
+        texto = .Replace(texto, "U")
         .Pattern = "[Á]"
         texto = .Replace(texto, "c")
+        .Pattern = "[«]"
+        texto = .Replace(texto, "C")
         .Pattern = "[Ò]"
         texto = .Replace(texto, "n")
+        .Pattern = "[—]"
+        texto = .Replace(texto, "N")
+        .Pattern = "[Ê]"
+        texto = .Replace(texto, "ae")
+        .Pattern = "[∆]"
+        texto = .Replace(texto, "AE")
+        .Pattern = "[ú]"
+        texto = .Replace(texto, "oe")
+        .Pattern = "[å]"
+        texto = .Replace(texto, "OE")
+        .Pattern = "[]"
+        texto = .Replace(texto, "d")
+        .Pattern = "[–]"
+        texto = .Replace(texto, "D")
+        .Pattern = "[˛]"
+        texto = .Replace(texto, "th")
+        .Pattern = "[ﬁ]"
+        texto = .Replace(texto, "TH")
+        .Pattern = "[ﬂ]"
+        texto = .Replace(texto, "ss")
+        .Pattern = "[ﬂ]"
+        texto = .Replace(texto, "SS")
+        .Pattern = "[˝ˇy]"
+        texto = .Replace(texto, "y")
+        .Pattern = "[›üY]"
+        texto = .Replace(texto, "Y")
+        .Pattern = " {2,}"
+        texto = .Replace(texto, " ")
     End With
-    
+
     RemoverAcentos = StrConv(texto, tipoTexto)
 
     Set re = Nothing
 End Function
 
-
-Private Sub mAno_KeyPress(ByVal KeyAscii As ReturnInteger)
-    mAno.MaxLength = 4
+Public Function EhAnoValido() As Boolean
+    EhAnoValido = True
     
-    Select Case KeyAscii
-        Case 9, 13, 48 To 57
-            KeyAscii = KeyAscii
-        
-        Case Else
-            KeyAscii = 0
-    End Select
-End Sub
-
-Public Function ValidarAno() As Boolean
-    With mAno
-        Dim comprimento As Long
-        comprimento = .MaxLength
-        
-        Dim texto As String
-        texto = .Value
-        
-        Dim anoMax As Long
-        anoMax = Year(Date) + 50
-    End With
+    Dim valor As String
+    valor = mAno.Value
+    
+    Dim anoMax As Integer
+    anoMax = Year(Date) + 50
     
     Select Case True
-        Case texto = ""
-            ValidarAno = True
+        Case Len(valor) = 0
+            Exit Function
         
-        Case Trim(Len(texto)) <> comprimento
-            ValidarAno = False
-            MsgBox "Informe o ano com " & comprimento & " dÌgitos", vbExclamation
+        Case Len(valor) < 4
+            MsgBox "Informe o ano com 4 dÌgitos", vbExclamation
+            EhAnoValido = False
 
-        Case CInt(texto) < 1900 Or CInt(texto) > anoMax
-            ValidarAno = False
+        Case CInt(valor) < 1900 Or CInt(valor) > anoMax
             MsgBox "Digite um ano entre 1900 e " & anoMax, vbExclamation
-        
-        Case Else
-            ValidarAno = True
+            EhAnoValido = False
     End Select
 End Function
 
-Private Sub mCep_KeyPress(ByVal KeyAscii As ReturnInteger)
-    Select Case KeyAscii
-        Case 9, 13, 48 To 57
-            KeyAscii = KeyAscii
-        
-        Case Else
-            KeyAscii = 0
+Private Sub mAno_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    Select Case True
+        Case KeyCode = vbKeyReturn Or KeyCode = vbKeyTab Or KeyCode = vbKeyBack
             Exit Sub
+            
+        Case KeyCode = vbKeyV And Shift = 2
+            Exit Sub
+            
+        Case KeyCode >= vbKey0 And KeyCode <= vbKey9, KeyCode >= vbKeyNumpad0 And KeyCode <= vbKeyNumpad9
+            Exit Sub
+            
+        Case Else
+            KeyCode = 0
     End Select
+End Sub
+
+Private Sub mAno_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+    With mAno
+        .MaxLength = 4
     
+        Select Case True
+            Case KeyAscii >= vbKey0 And KeyAscii <= vbKey9, KeyAscii >= vbKeyNumpad0 And KeyAscii <= vbKeyNumpad9
+                Exit Sub
+            
+            Case Else
+                KeyAscii = 0
+        End Select
+    End With
+End Sub
+
+Public Function EhCepValido() As Boolean
+    EhCepValido = True
+    
+    Dim valor As String
+    valor = ObterApenasNumeros(mCep.Value)
+    
+    Select Case True
+        Case Len(Trim(valor)) = 0
+            Exit Function
+
+        Case Len(valor) <> 8
+            MsgBox "CEP deve conter 8 dÌgitos", vbExclamation
+            EhCepValido = False
+
+        Case valor = String(8, Left(valor, 1))
+            MsgBox "Digite um CEP v·lido", vbExclamation
+            EhCepValido = False
+
+        Case Else
+            mCep.Value = CStr(Format(valor, "00000\-000"))
+    End Select
+End Function
+
+Private Sub mCep_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    Select Case True
+        Case KeyCode = vbKeyReturn Or KeyCode = vbKeyTab Or KeyCode = vbKeyBack
+            Exit Sub
+            
+        Case KeyCode = vbKeyV And Shift = 2
+            Exit Sub
+            
+        Case KeyCode >= vbKey0 And KeyCode <= vbKey9, KeyCode >= vbKeyNumpad0 And KeyCode <= vbKeyNumpad9
+            Exit Sub
+            
+        Case Else
+            KeyCode = 0
+    End Select
+End Sub
+
+Private Sub mCep_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
     With mCep
         .MaxLength = 9
-        If .SelStart = 5 Then .SelText = "-"
+    
+        Select Case True
+            Case .SelStart = 5
+                .SelText = "-"
+            
+            Case KeyAscii >= vbKey0 And KeyAscii <= vbKey9, KeyAscii >= vbKeyNumpad0 And KeyAscii <= vbKeyNumpad9
+                Exit Sub
+            
+            Case Else
+                KeyAscii = 0
+        End Select
     End With
 End Sub
-
-Public Function ValidarCep() As Boolean
-    ValidarCep = True
-    
-    If mCep.Value = "" Then Exit Function
-       
-    Dim numeros As String
-    numeros = ObterApenasNumeros(mCep.Value)
-    
-    Select Case True
-        Case Len(numeros) <> 8
-            ValidarCep = False
-            
-        Case numeros = String(8, Left(numeros, 1))
-            ValidarCep = False
-    End Select
-
-    If Not ValidarCep Then
-        MsgBox "CEP inv·lido", vbExclamation
-    End If
-End Function
 
 Private Sub mCnpj_KeyPress(ByVal KeyAscii As ReturnInteger)
     Select Case KeyAscii
@@ -351,221 +380,188 @@ Public Function ValidarCpf() As Boolean
     End If
 End Function
 
-
-Private Sub mData_KeyPress(ByVal KeyAscii As ReturnInteger)
-    Select Case KeyAscii
-        Case 9, 13, 48 To 57
-            KeyAscii = KeyAscii
-        
-        Case Else
-            KeyAscii = 0
-            Exit Sub
-    End Select
+Public Function EhDataValida() As Boolean
+    EhDataValida = True
     
-    With mData
-        .MaxLength = 10
-        If .SelStart = 2 Then .SelText = "/"
-        If .SelStart = 5 Then .SelText = "/"
-    End With
-End Sub
-
-Public Function ValidarData() As Boolean
-    Dim texto As String
-    texto = Trim(mData.Value)
+    Dim valor As String
+    valor = Trim(mData.Value)
     
     Dim anoMax As Long
     anoMax = Year(Date) + 50
     
     Select Case True
-        Case texto = ""
-            ValidarData = True
-        
-        Case Not IsDate(texto)
-            MsgBox "Data inv·lida", vbExclamation
-            ValidarData = False
+        Case Len(valor) = 0
+            Exit Function
 
-        Case Year(CDate(texto)) < 1900 Or Year(CDate(texto)) > anoMax
-            MsgBox "Digite uma data entre 01/01/1900 e 31/12/" & anoMax, vbExclamation
-            ValidarData = False
+        Case Len(valor) < 10
+            MsgBox "A data deve conter 10 dÌgitos e estar no formato DD/MM/AAAA", vbExclamation
+            EhDataValida = False
+
+        Case Not IsDate(valor)
+            MsgBox "Digite uma data v·lida", vbExclamation
+            EhDataValida = False
+        
+        Case Right(valor, 4) < 1900 Or Right(valor, 4) > anoMax
+            MsgBox "A data deve estar entre os anos 1900 e " & anoMax, vbExclamation
+            EhDataValida = False
         
         Case Else
-            mData.Value = FormatDateTime(texto, vbShortDate)
-            ValidarData = True
+            mData.Value = Format$(valor, "dd/mm/yyyy")
     End Select
 End Function
 
-
-Private Sub Decimal2_KeyDown(ByVal KeyCode As ReturnInteger, ByVal Shift As Integer)
-    Select Case (KeyCode)
-        Case 9, 13
-            Select Case Decimal2
-                Case ""
-                    Let Decimal2 = Format(0, "#,##0.00")
-                Case Else
-                    Let Decimal2 = Format(Decimal2, "#,##0.00")
-            End Select
-        Case Else
+Private Sub mData_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    Select Case True
+        Case KeyCode = vbKeyReturn Or KeyCode = vbKeyTab Or KeyCode = vbKeyBack
             Exit Sub
+        
+        Case KeyCode >= vbKey0 And KeyCode <= vbKey9, KeyCode >= vbKeyNumpad0 And KeyCode <= vbKeyNumpad9
+            Exit Sub
+        
+        Case Else
+            KeyCode = 0
     End Select
 End Sub
 
+Private Sub mData_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+    With mData
+        .MaxLength = 10
+        
+        Select Case True
+            Case .SelStart = 2, .SelStart = 5
+                .SelText = "/"
+            
+            Case KeyAscii >= vbKey0 And KeyAscii <= vbKey9, KeyAscii >= vbKeyNumpad0 And KeyAscii <= vbKeyNumpad9
+                Exit Sub
+            
+            Case Else
+                KeyAscii = 0
+        End Select
+    End With
+End Sub
 
-Private Sub Decimal2_KeyPress(ByVal KeyAscii As ReturnInteger)
-    Let Decimal2.TextAlign = 3
-    Let Decimal2.MaxLength = 13
+Private Sub mDecimal_Change()
+    If Len(Trim(mDecimal.Text)) = 0 Then Exit Sub
+    
+    If mAtualizando Then Exit Sub
+    mAtualizando = True
+    
+    mDecimal.MaxLength = 20
+    
+    Dim valor As String
+    valor = ObterApenasNumeros(mDecimal.Text)
 
-    Dim v As Integer
-    Let v = InStr(1, Decimal2.Value, ",", vbTextCompare)
+    If Len(valor) > mDecimal.MaxLength Then
+        valor = Left$(valor, mDecimal.MaxLength)
+    End If
+    
+    mDecimal.Value = Format(CCur(valor / 100), "#,##0.00")
 
-    Select Case (KeyAscii)
-        Case 9, 13, 45, 48 To 57
-            KeyAscii = KeyAscii
-        Case 44
-            KeyAscii = KeyAscii
-            If (v <> 0) Then KeyAscii = 0
+    mAtualizando = False
+End Sub
+
+Private Sub mDecimal_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    Dim valor As String
+    
+    Select Case True
+        Case KeyCode = vbKeyBack, KeyCode = vbKeyReturn, KeyCode = vbKeyTab
+            Exit Sub
+
+        Case KeyCode = vbKeyV And Shift = 2
+            Exit Sub
+
+        Case KeyCode >= vbKey0 And KeyCode <= vbKey9, KeyCode >= vbKeyNumpad0 And KeyCode <= vbKeyNumpad9
+            On Error Resume Next
+            valor = CDbl(mDecimal.Text) * 100
+            If Len(valor) <= 15 Then valor = valor & CStr(KeyCode Mod 48)
+            On Error GoTo 0
+        
+        Case Else
+            KeyCode = 0
+    End Select
+    
+    On Error Resume Next
+    mDecimal.Value = Format(CCur(valor) / 100, "#,##0.00")
+    On Error GoTo 0
+    
+    KeyCode = 0
+End Sub
+
+Private Sub mDecimal_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+    mDecimal.MaxLength = 20
+    
+    Select Case True
+        Case KeyAscii >= vbKey0 And KeyAscii <= vbKey9
+            Exit Sub
+        
         Case Else
             KeyAscii = 0
-            Exit Sub
-    End Select
-    
-    Select Case Decimal2.SelStart
-        Case Decimal2.MaxLength - 3
-            Decimal2.SelText = ","
-        Case Else
-            If (v <> 0) Then Decimal2.MaxLength = v + 2
     End Select
 End Sub
 
-
-Private Sub Decimal4_KeyDown(ByVal KeyCode As ReturnInteger, ByVal Shift As Integer)
-    Select Case (KeyCode)
-        Case 9, 13
-            Select Case Decimal4
-                Case ""
-                    Let Decimal4 = FormatNumber(0, 4, -1, 0, -1)
-                Case Else
-                    Let Decimal4 = FormatNumber(Decimal4, 4, -1, 0, -1)
-            End Select
-        Case Else
-            Exit Sub
-    End Select
-End Sub
-
-
-Private Sub Decimal4_KeyPress(ByVal KeyAscii As ReturnInteger)
-    Let Decimal4.TextAlign = 3
-    Let Decimal4.MaxLength = 15
+Public Function EhHoraValida() As Boolean
+    EhHoraValida = True
     
-    Select Case (KeyAscii)
-        Case 9, 13, 44, 45, 48 To 57
-            Let KeyAscii = KeyAscii
-        Case Else
-            Let KeyAscii = 0
-            Exit Sub
-    End Select
-    
-    Select Case Decimal4.SelStart
-        Case Decimal4.MaxLength - 5
-            Let Decimal4.SelText = ","
-        Case Else
-            Dim v As Integer
-            Let v = InStr(1, Decimal4.Value, ",", vbTextCompare)
-            If (v <> 0) Then Let Decimal4.MaxLength = v + 4
-    End Select
-End Sub
+    Select Case True
+        Case Len(Trim(mHora.Value)) = 0
+            Exit Function
 
-
-Private Sub Decimal6_KeyPress(ByVal KeyAscii As ReturnInteger)
-    Let Decimal4.TextAlign = 3
-    Let Decimal4.MaxLength = 17
-    
-    Select Case (KeyAscii)
-        Case 9, 13, 44, 45, 48 To 57
-            Let KeyAscii = KeyAscii
-        Case Else
-            Let KeyAscii = 0
-            Exit Sub
-    End Select
-    
-    Select Case Decimal4.SelStart
-        Case Decimal4.MaxLength - 7
-            Let Decimal4.SelText = ","
-        Case Else
-            Dim v As Integer
-            Let v = InStr(1, Decimal4.Value, ",", vbTextCompare)
-            If (v <> 0) Then Let Decimal4.MaxLength = v + 6
-    End Select
-End Sub
-
-
-Private Sub Decimal6_KeyDown(ByVal KeyCode As ReturnInteger, ByVal Shift As Integer)
-    Select Case (KeyCode)
-        Case 9, 13
-            Select Case Decimal6
-                Case ""
-                    Let Decimal6 = FormatNumber(0, 6, -1, 0, -1)
-                Case Else
-                    Let Decimal6 = FormatNumber(Decimal6, 6, -1, 0, -1)
-            End Select
-        Case Else
-            Exit Sub
-    End Select
-End Sub
-
-
-Private Sub Hora_KeyDown(ByVal KeyCode As ReturnInteger, ByVal Shift As Integer)
-    
-    If KeyCode = 9 Or KeyCode = 13 Then
+        Case Not IsDate(mHora.Value)
+            MsgBox "Digite uma hora v·lida", vbExclamation
+            EhHoraValida = False
         
-        If Hora.Value = "" Then
+        Case Else
+            mHora.Value = CStr(Format(CDate(mHora.Value), "Short Time"))
+    End Select
+End Function
+
+Private Sub mHora_KeyDown(ByVal KeyCode As ReturnInteger, ByVal Shift As Integer)
+    Select Case True
+        Case KeyCode = vbKeyReturn Or KeyCode = vbKeyTab Or KeyCode = vbKeyBack
             Exit Sub
-        ElseIf UBound(Split(Hora.Value, ":")) = 0 Then
+            
+        Case KeyCode = vbKeyV And Shift = 2
+            Exit Sub
+            
+        Case KeyCode >= vbKey0 And KeyCode <= vbKey9, KeyCode >= vbKeyNumpad0 And KeyCode <= vbKeyNumpad9
+            Exit Sub
+            
+        Case Else
             KeyCode = 0
-            MsgBox "Hora em formato inv·lido", vbExclamation
-        ElseIf Split(Hora.Value, ":")(0) > 23 Or Split(Hora.Value, ":")(1) > 59 Then
-            KeyCode = 0
-            MsgBox "Hora em formato inv·lido", vbExclamation
-            Hora.Value = ""
-        Else
-            Hora.Value = Format(Hora.Value, "Short Time")
-        End If
+    End Select
+End Sub
+
+Private Sub mHora_KeyPress(ByVal KeyAscii As ReturnInteger)
+    mHora.MaxLength = 5
+    
+    Select Case True
+        Case mHora.SelStart = 2
+            mHora.SelText = ":"
         
-    End If
-    
+        Case KeyAscii >= vbKey0 And KeyAscii <= vbKey9, KeyAscii >= vbKeyNumpad0 And KeyAscii <= vbKeyNumpad9
+            Exit Sub
+        
+        Case Else
+            KeyAscii = 0
+    End Select
 End Sub
 
-
-Private Sub Hora_KeyPress(ByVal KeyAscii As ReturnInteger)
-    
-    Hora.MaxLength = 5
-    
-    If (KeyAscii < 48 Or KeyAscii > 57) _
-    And (KeyAscii <> 13 Or KeyAscii <> 9) Then
-        KeyAscii = 0
-    ElseIf Hora.SelStart = 2 Then
-        Hora.SelText = ":"
-    End If
-    
-End Sub
-
-
-Private Sub Inteiro_KeyDown(ByVal KeyCode As ReturnInteger, ByVal Shift As Integer)
+Private Sub mInteiro_KeyDown(ByVal KeyCode As ReturnInteger, ByVal Shift As Integer)
     Select Case (KeyCode)
         Case 9, 13
-            Select Case IsNull(Inteiro)
+            Select Case IsNull(mInteiro)
                 Case True
-                    Let Inteiro = Null
+                    Let mInteiro = Null
                 Case Else
-                    Let Inteiro = FormatNumber(Val(Inteiro), 0, -1, 0, -1)
+                    Let mInteiro = FormatNumber(Val(mInteiro), 0, -1, 0, -1)
             End Select
         Case Else
             Exit Sub
     End Select
 End Sub
 
-
-Private Sub Inteiro_KeyPress(ByVal KeyAscii As ReturnInteger)
-    Inteiro.TextAlign = fmTextAlignRight
+Private Sub mInteiro_KeyPress(ByVal KeyAscii As ReturnInteger)
+    mInteiro.TextAlign = fmTextAlignRight
     Select Case KeyAscii
         Case vbKeyTab, vbKeyReturn, vbKeySubtract, vbKeyBack, vbKeyDelete, vbKey0 To vbKey9, vbKeyNumpad0 To vbKeyNumpad9
             KeyAscii = KeyAscii
@@ -574,78 +570,297 @@ Private Sub Inteiro_KeyPress(ByVal KeyAscii As ReturnInteger)
     End Select
 End Sub
 
+Private Sub mLetra_Change()
+    Dim texto As String
+    texto = Trim(mLetra.Text)
 
-Private Sub Letra_KeyPress(ByVal KeyAscii As ReturnInteger)
-    Select Case (KeyAscii)
-        Case 65 To 90, 97 To 122
-            Let KeyAscii = KeyAscii
+    If Len(texto) = 0 Then Exit Sub
+
+    If mAtualizando Then Exit Sub
+    mAtualizando = True
+
+    texto = ObterApenasLetras(texto)
+
+    With mLetra
+        .MaxLength = 255
+
+        If Len(texto) > .MaxLength Then texto = Left$(texto, .MaxLength)
+
+        .Value = Trim(texto)
+    End With
+
+    mAtualizando = False
+End Sub
+
+Private Sub mLetra_KeyDown(ByVal KeyCode As ReturnInteger, ByVal Shift As Integer)
+    Select Case True
+        Case KeyCode = vbKeyReturn Or KeyCode = vbKeyTab Or KeyCode = vbKeyBack Or KeyCode = vbKeyDelete
+            Exit Sub
+
+        Case KeyCode = vbKeyLeft Or KeyCode = vbKeyRight Or KeyCode = vbKeyHome Or KeyCode = vbKeyEnd
+            Exit Sub
+
+        Case KeyCode = vbKeyV And Shift = 2
+            Exit Sub
+            
+        Case KeyCode >= 65 And KeyCode <= 90, KeyCode >= 97 And KeyCode <= 122, KeyCode = 32
+            Exit Sub
+
         Case Else
-            Let KeyAscii = 0
+            KeyCode = 0
     End Select
 End Sub
 
-Private Sub mNumeroTexto_KeyPress(ByVal KeyAscii As ReturnInteger)
-    Select Case KeyAscii
-        Case 48 To 57
-            KeyAscii = KeyAscii
+Private Sub mLetra_KeyPress(ByVal KeyAscii As ReturnInteger)
+    mLetra.MaxLength = 255
+    
+    Select Case True
+        Case KeyAscii >= 65 And KeyAscii <= 90, KeyAscii >= 97 And KeyAscii <= 122, KeyAscii = 32
+            Exit Sub
+
         Case Else
             KeyAscii = 0
     End Select
 End Sub
 
 Private Sub mMaiusculo_Change()
-    Dim texto As String
-    texto = mMaiusculo.Value
-    mMaiusculo.Value = RemoverAcentos(texto, vbUpperCase)
+    With mMaiusculo
+        .MaxLength = 255
+        .Value = RemoverAcentos(.Value, vbUpperCase)
+    End With
+End Sub
+
+Private Sub mMaiusculo_KeyDown(ByVal KeyCode As ReturnInteger, ByVal Shift As Integer)
+    Select Case True
+        Case KeyCode = vbKeyReturn Or KeyCode = vbKeyTab Or KeyCode = vbKeyBack Or KeyCode = vbKeyDelete
+            Exit Sub
+
+        Case KeyCode = vbKeyLeft Or KeyCode = vbKeyRight Or KeyCode = vbKeyHome Or KeyCode = vbKeyEnd
+            Exit Sub
+
+        Case KeyCode = vbKeyV And Shift = 2
+            Exit Sub
+
+        Case KeyCode >= vbKey0 And KeyCode <= vbKey9
+            Exit Sub
+
+        Case KeyCode >= vbKeyNumpad0 And KeyCode <= vbKeyNumpad9
+            Exit Sub
+            
+        Case KeyCode >= vbKeyA And KeyCode <= vbKeyZ, KeyCode = vbKeySpace
+            Exit Sub
+
+        Case Else
+            KeyCode = 0
+    End Select
 End Sub
 
 Private Sub mMaiusculo_KeyPress(ByVal KeyAscii As ReturnInteger)
-    KeyAscii = Asc(UCase$(Chr$(KeyAscii)))
+    mMaiusculo.MaxLength = 255
+    KeyAscii = AscW(UCase$(Chr$(KeyAscii)))
 End Sub
 
 Private Sub mMinusculo_Change()
-    Dim texto As String
-    texto = mMinusculo.Value
-    mMinusculo.Value = RemoverAcentos(texto, vbLowerCase)
+    With mMinusculo
+        .MaxLength = 255
+        .Value = RemoverAcentos(.Value, vbLowerCase)
+    End With
+End Sub
+
+Private Sub mMinusculo_KeyDown(ByVal KeyCode As ReturnInteger, ByVal Shift As Integer)
+    Select Case True
+        Case KeyCode = vbKeyReturn Or KeyCode = vbKeyTab Or KeyCode = vbKeyBack Or KeyCode = vbKeyDelete
+            Exit Sub
+
+        Case KeyCode = vbKeyLeft Or KeyCode = vbKeyRight Or KeyCode = vbKeyHome Or KeyCode = vbKeyEnd
+            Exit Sub
+
+        Case KeyCode = vbKeyV And Shift = 2
+            Exit Sub
+
+        Case KeyCode >= vbKey0 And KeyCode <= vbKey9
+            Exit Sub
+
+        Case KeyCode >= vbKeyNumpad0 And KeyCode <= vbKeyNumpad9
+            Exit Sub
+            
+        Case KeyCode >= vbKeyA And KeyCode <= vbKeyZ, KeyCode = vbKeySpace
+            Exit Sub
+
+        Case Else
+            KeyCode = 0
+    End Select
 End Sub
 
 Private Sub mMinusculo_KeyPress(ByVal KeyAscii As ReturnInteger)
-    KeyAscii = Asc(LCase(Chr(KeyAscii)))
+    mMinusculo.MaxLength = 255
+    KeyAscii = AscW(LCase$(Chr$(KeyAscii)))
 End Sub
 
-Private Sub mTelefone_KeyPress(ByVal KeyAscii As ReturnInteger)
-    Select Case KeyAscii
-        Case 9, 13, 48 To 57
-            KeyAscii = KeyAscii
+Private Sub mNumeroTexto_Change()
+    mNumeroTexto.Value = ObterApenasNumeros(mNumeroTexto.Value)
+End Sub
+
+Private Sub mNumeroTexto_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    Select Case True
+        Case KeyCode = vbKeyReturn Or KeyCode = vbKeyTab Or KeyCode = vbKeyBack Or KeyCode = vbKeyDelete
+            Exit Sub
+            
+        Case KeyCode = vbKeyV And Shift = 2
+            Exit Sub
+            
+        Case KeyCode >= vbKey0 And KeyCode <= vbKey9, KeyCode >= vbKeyNumpad0 And KeyCode <= vbKeyNumpad9
+            Exit Sub
+            
+        Case Else
+            KeyCode = 0
+    End Select
+End Sub
+
+Private Sub mNumeroTexto_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+    With mNumeroTexto
+        .MaxLength = 255
+    
+        Select Case True
+            Case KeyAscii >= vbKey0 And KeyAscii <= vbKey9, KeyAscii >= vbKeyNumpad0 And KeyAscii <= vbKeyNumpad9
+                Exit Sub
+            
+            Case Else
+                KeyAscii = 0
+        End Select
+    End With
+End Sub
+
+Public Function EhEmailValido() As Boolean
+    Dim re As Object
+    Set re = CreateObject("VBScript.RegExp")
+    
+    With re
+        .Global = True
+        .MultiLine = True
+        .Pattern = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
+    End With
+    
+    Dim texto As String
+    texto = Trim(mEmail.Value)
+    
+    Select Case True
+        Case Len(texto) = 0
+            EhEmailValido = True
+        
+        Case re.test(texto)
+            EhEmailValido = True
         
         Case Else
-            KeyAscii = 0
-            Exit Sub
+            MsgBox "E-mail em formato inv·lido", vbExclamation
+            EhEmailValido = False
     End Select
-    
-    Dim inicioNumero As Long
-    inicioNumero = 9
-    
-    On Error Resume Next
-    inicioNumero = IIf(Mid$(mTelefone.Value, 6, 1) = 9, 10, 9)
-    On Error GoTo 0
-    
-    With mTelefone
-        .MaxLength = IIf(inicioNumero = 9, 14, 15)
-        If .SelStart = 0 Then .SelText = "("
-        If .SelStart = 3 Then .SelText = ") "
-        If .SelStart = inicioNumero Then .SelText = "-"
-    End With
-End Sub
 
+    Set re = Nothing
+End Function
+
+Private Sub mEmail_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    Select Case KeyCode
+        Case vbKeyBack, vbKeyDelete, vbKeyLeft, vbKeyRight, vbKeyHome, vbKeyEnd
+            Exit Sub
+
+        Case vbKeyV
+            If Shift = 2 Then Exit Sub
+    End Select
+End Sub
 
 Private Sub mEmail_KeyPress(ByVal KeyAscii As ReturnInteger)
-    KeyAscii = Asc(LCase$(Chr$(KeyAscii)))
+    mEmail.MaxLength = 255
+    KeyAscii = AscW(LCase$(Chr$(KeyAscii)))
+
+    Select Case KeyAscii
+        Case 48 To 57
+            '0-9
+            Exit Sub
+
+        Case 65 To 90, 97 To 122
+            'A-Z, a-z
+            Exit Sub
+
+        Case 45, 46, 64, 95
+            '-.@_
+            Exit Sub
     
-    With mEmail
-        .MaxLength = 255
-    End With
+        Case Else
+            KeyAscii = 0
+    End Select
 End Sub
 
+Public Function EhTelefoneValido() As Boolean
+    Dim re As Object
+    Set re = CreateObject("VBScript.RegExp")
+    
+    With re
+        .Global = True
+        .MultiLine = True
+        .Pattern = "^\(?\d{2}\)?\s?(9?\d{4})-?\d{4}$"
+    End With
+    
+    Dim valor As String
+    valor = Trim(mTelefone.Value)
+    
+    Select Case True
+        Case Len(valor) = 0
+            EhTelefoneValido = True
+            
+        Case re.test(valor)
+            EhTelefoneValido = True
+            
+        Case Else
+            MsgBox "Telefone digitado est· em um formato inv·lido", vbExclamation
+            EhTelefoneValido = False
+    End Select
+    
+    Set re = Nothing
+End Function
 
+Private Sub mTelefone_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    Select Case True
+        Case KeyCode = vbKeyReturn Or KeyCode = vbKeyTab Or KeyCode = vbKeyBack
+            Exit Sub
+            
+        Case KeyCode = vbKeyV And Shift = 2
+            Exit Sub
+            
+        Case KeyCode >= vbKey0 And KeyCode <= vbKey9, KeyCode >= vbKeyNumpad0 And KeyCode <= vbKeyNumpad9
+            Exit Sub
+            
+        Case Else
+            KeyCode = 0
+    End Select
+End Sub
 
+Private Sub mTelefone_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+    Dim inicioNumero As Integer
+    inicioNumero = 9
+    
+    With mTelefone
+        On Error Resume Next
+        inicioNumero = IIf(Mid$(.Value, 6, 1) = 9, 10, 9)
+        On Error GoTo 0
+        
+        .MaxLength = IIf(inicioNumero = 9, 14, 15)
+        
+        Select Case True
+            Case .SelStart = 0
+                .SelText = "("
+            
+            Case .SelStart = 3
+                .SelText = ") "
+                
+            Case .SelStart = inicioNumero
+                .SelText = "-"
+            
+            Case KeyAscii >= vbKey0 And KeyAscii <= vbKey9, KeyAscii >= vbKeyNumpad0 And KeyAscii <= vbKeyNumpad9
+                Exit Sub
+            
+            Case Else
+                KeyAscii = 0
+        End Select
+    End With
+End Sub
