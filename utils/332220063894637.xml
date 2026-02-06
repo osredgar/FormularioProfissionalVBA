@@ -1,0 +1,225 @@
+<nfeProc versao="4.00" xmlns="http://www.portalfiscal.inf.br/nfe">
+    <NFe xmlns="http://www.portalfiscal.inf.br/nfe">
+        <infNFe versao="4.00" Id="NFe32220805570714000825550010150891571049740065">
+            <ide>
+                <cUF>32</cUF>
+                <cNF>04974006</cNF>
+                <natOp>VENDA PARA CONSUMIDOR FINAL</natOp>
+                <mod>55</mod>
+                <serie>1</serie>
+                <nNF>15089157</nNF>
+                <dhEmi>2022-08-23T09:03:12-03:00</dhEmi>
+                <dhSaiEnt>2022-08-23T09:03:12-03:00</dhSaiEnt>
+                <tpNF>1</tpNF>
+                <idDest>2</idDest>
+                <cMunFG>3205101</cMunFG>
+                <tpImp>1</tpImp>
+                <tpEmis>1</tpEmis>
+                <cDV>5</cDV>
+                <tpAmb>1</tpAmb>
+                <finNFe>1</finNFe>
+                <indFinal>1</indFinal>
+                <indPres>2</indPres>
+                <indIntermed>0</indIntermed>
+                <procEmi>0</procEmi>
+                <verProc>MigrateInvoiCy</verProc>
+            </ide>
+            <emit>
+                <CNPJ>05570714000825</CNPJ>
+                <xNome>KABUM COMERCIO ELETRONICO S.A</xNome>
+                <xFant>KaBuM!</xFant>
+                <enderEmit>
+                    <xLgr>ROD BR-262</xLgr>
+                    <nro>222</nro>
+                    <xCpl>GALPAO 2 ARMZ 3 4 E 5</xCpl>
+                    <xBairro>VILA BETHANIA</xBairro>
+                    <cMun>3205101</cMun>
+                    <xMun>VIANA</xMun>
+                    <UF>ES</UF>
+                    <CEP>29136010</CEP>
+                    <cPais>1058</cPais>
+                    <xPais>Brasil</xPais>
+                    <fone>1921144444</fone>
+                </enderEmit>
+                <IE>083078665</IE>
+                <IEST>0990536317</IEST>
+                <CRT>3</CRT>
+            </emit>
+            <dest>
+                <CPF>07081226981</CPF>
+                <xNome>EDGAR SANTA ROSA</xNome>
+                <enderDest>
+                    <xLgr>RUA DEPUTADO TENORIO CAVALCANTI</xLgr>
+                    <nro>796</nro>
+                    <xCpl>SOBRELOJA</xCpl>
+                    <xBairro>UBERABA</xBairro>
+                    <cMun>4106902</cMun>
+                    <xMun>CURITIBA</xMun>
+                    <UF>PR</UF>
+                    <CEP>81590240</CEP>
+                    <cPais>1058</cPais>
+                    <xPais>Brasil</xPais>
+                    <fone>41995062205</fone>
+                </enderDest>
+                <indIEDest>9</indIEDest>
+            </dest>
+            <det nItem="1">
+                <prod>
+                    <cProd>353566</cProd>
+                    <cEAN>SEM GTIN</cEAN>
+                    <xProd>SMARTPHONE PHILCO HIT P8, 3GB RAM, 64GB, OCTA CORE, CAMERA 13MP, TELA
+                        INFINITA 6, DARK BLUE - 98253014</xProd>
+                    <NCM>85171300</NCM>
+                    <CEST>2105301</CEST>
+                    <CFOP>6108</CFOP>
+                    <uCom>UN</uCom>
+                    <qCom>1.0000</qCom>
+                    <vUnCom>579.0000000000</vUnCom>
+                    <vProd>579.00</vProd>
+                    <cEANTrib>SEM GTIN</cEANTrib>
+                    <uTrib>UN</uTrib>
+                    <qTrib>1.0000</qTrib>
+                    <vUnTrib>579.0000000000</vUnTrib>
+                    <vFrete>18.69</vFrete>
+                    <indTot>1</indTot>
+                </prod>
+                <imposto>
+                    <vTotTrib>179.31</vTotTrib>
+                    <ICMS>
+                        <ICMS00>
+                            <orig>0</orig>
+                            <CST>00</CST>
+                            <modBC>3</modBC>
+                            <vBC>597.69</vBC>
+                            <pICMS>12.0000</pICMS>
+                            <vICMS>71.72</vICMS>
+                        </ICMS00>
+                    </ICMS>
+                    <PIS>
+                        <PISAliq>
+                            <CST>01</CST>
+                            <vBC>525.97</vBC>
+                            <pPIS>1.6500</pPIS>
+                            <vPIS>8.68</vPIS>
+                        </PISAliq>
+                    </PIS>
+                    <COFINS>
+                        <COFINSAliq>
+                            <CST>01</CST>
+                            <vBC>525.97</vBC>
+                            <pCOFINS>7.6000</pCOFINS>
+                            <vCOFINS>39.97</vCOFINS>
+                        </COFINSAliq>
+                    </COFINS>
+                    <ICMSUFDest>
+                        <vBCUFDest>597.69</vBCUFDest>
+                        <pICMSUFDest>12.00</pICMSUFDest>
+                        <pICMSInter>12.00</pICMSInter>
+                        <pICMSInterPart>100.00</pICMSInterPart>
+                        <vICMSUFDest>0.00</vICMSUFDest>
+                        <vICMSUFRemet>0.00</vICMSUFRemet>
+                    </ICMSUFDest>
+                </imposto>
+                <infAdProd>GARANTIA 12 MESES - N.SERIE OU IMEI 354777931061928</infAdProd>
+            </det>
+            <total>
+                <ICMSTot>
+                    <vBC>597.69</vBC>
+                    <vICMS>71.72</vICMS>
+                    <vICMSDeson>0.00</vICMSDeson>
+                    <vICMSUFDest>0.00</vICMSUFDest>
+                    <vICMSUFRemet>0.00</vICMSUFRemet>
+                    <vFCP>0.00</vFCP>
+                    <vBCST>0.00</vBCST>
+                    <vST>0.00</vST>
+                    <vFCPST>0.00</vFCPST>
+                    <vFCPSTRet>0.00</vFCPSTRet>
+                    <vProd>579.00</vProd>
+                    <vFrete>18.69</vFrete>
+                    <vSeg>0.00</vSeg>
+                    <vDesc>0.00</vDesc>
+                    <vII>0.00</vII>
+                    <vIPI>0.00</vIPI>
+                    <vIPIDevol>0.00</vIPIDevol>
+                    <vPIS>8.68</vPIS>
+                    <vCOFINS>39.97</vCOFINS>
+                    <vOutro>0.00</vOutro>
+                    <vNF>597.69</vNF>
+                    <vTotTrib>179.31</vTotTrib>
+                </ICMSTot>
+            </total>
+            <transp>
+                <modFrete>0</modFrete>
+                <transporta>
+                    <CNPJ>27221173000196</CNPJ>
+                    <xNome>REDE SUL</xNome>
+                </transporta>
+                <vol>
+                    <qVol>1</qVol>
+                    <nVol>1</nVol>
+                    <pesoL>0.390</pesoL>
+                    <pesoB>0.390</pesoB>
+                </vol>
+            </transp>
+            <pag>
+                <detPag>
+                    <tPag>17</tPag>
+                    <vPag>597.69</vPag>
+                </detPag>
+            </pag>
+            <infAdic>
+                <infCpl>PEDIDO 30283435 - OBSERVACAO DO CLIENTE - NENHUMA - VALOR APROXIMADO DOS
+                    TRIBUTOS 179.31 REAIS - 30.00 POR CENTO - FONTE IBPT</infCpl>
+                <obsCont xCampo="TF_RASTREIO">
+                    <xTexto>30283435</xTexto>
+                </obsCont>
+                <obsCont xCampo="TF_MODAL">
+                    <xTexto>EXP_REDESUL</xTexto>
+                </obsCont>
+            </infAdic>
+            <compra>
+                <xPed>30283435</xPed>
+            </compra>
+            <infRespTec>
+                <CNPJ>05570714000825</CNPJ>
+                <xContato>KABUM</xContato>
+                <email>suporte@kabum.com.br</email>
+                <fone>1921144444</fone>
+            </infRespTec>
+        </infNFe>
+        <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+            <SignedInfo>
+                <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+                <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+                <Reference URI="#NFe32220805570714000825550010150891571049740065">
+                    <Transforms>
+                        <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+                        <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+                    </Transforms>
+                    <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+                    <DigestValue>995TGY3crES1PpgCiJyrxbweQtI=</DigestValue>
+                </Reference>
+            </SignedInfo>
+            <SignatureValue>
+                eHVIyK1nRmLCBj2TsudjYfal1YyVFmAwx1rR4dqASqsfxkxwYb7ON7d0qqVpaHIJSibOibjw2IA7U28LqBp9G7DeFyahkizug85yq3UQA33Ur8rLXxaxDSx60o90EmyQi+QIH2rAvL1xSZ7wQ8ljlyhtTRAURX0FlKV8rGvChAqs0tKcZqX1D6IDm5vJsbM/qrXiqY0pZrDp7JzGQYI/rZdsWOZ+iRc025XCgGayVIGst03EoOjAyLPQuohpQCUScS6RrlRr1pTS8P/7vDoCJJzhbD4oyC31DjE/4SiggH1LzWvXp1hvWdDXYkr+L0+TCr5zRMt0OxfTtqsLjSSZjA==</SignatureValue>
+            <KeyInfo>
+                <X509Data>
+                    <X509Certificate>
+                        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</X509Certificate>
+                </X509Data>
+            </KeyInfo>
+        </Signature>
+    </NFe>
+    <protNFe versao="4.00">
+        <infProt>
+            <tpAmb>1</tpAmb>
+            <verAplic>SVRS202208161921</verAplic>
+            <chNFe>32220805570714000825550010150891571049740065</chNFe>
+            <dhRecbto>2022-08-23T09:03:12-03:00</dhRecbto>
+            <nProt>332220063894637</nProt>
+            <digVal>995TGY3crES1PpgCiJyrxbweQtI=</digVal>
+            <cStat>100</cStat>
+            <xMotivo>Autorizado o uso da NF-e</xMotivo>
+        </infProt>
+    </protNFe>
+</nfeProc>
